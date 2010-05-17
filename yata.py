@@ -70,6 +70,8 @@ class Yata:
                 parser.print_help();
                 exit(-1);
 
+        print options.sourceSentence;
+        print options.targetSentence;
 
 ##
 
