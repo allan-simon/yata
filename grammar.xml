@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Note to Allan:
+		this is an imcomplete file
+		the term markup is the type of word define in the dictionary.xml
+		Try to find out a better achitecture
+-->
+<grammar>
+	<groups>
+		<group name="nominal">
+			<term>proper_name</term>
+		</group>
+		<group name="nominal">
+			<term>determinant</term>
+			<term>common_name</term>
+		</group>
+		<group name="verbal">
+			<term>verb</term>
+		</group>
+	<groups>
+	<sentences>
+		<sentence>
+			<group name="nomial" />
+			<group name="verbal" />
+			<group name="nominal" />
+		<sentence>
+	</sentences>
+</grammar>

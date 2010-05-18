@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+    <all_flections>
+        <flection_rule name="regular_common_name">
+            <flection type="singular"/>
+            <flection type="plural">
+                s/*/$0s/
+            </flection>
+        </flection>
+    <all_flections>
+
+
+    <words>
+        <word type="common_name">
+            <lemme flection="regular_common_name">
+                pomme
+            </lemme>
+        <word>
+        <word type="common_name">
+            <lemme flection="regular_common_name">
+                tarte
+            </lemme>
+        <word>
+        
+        <word type="poper_name">
+        	<lemme>
+        		allan
+        	</lemme>
+        </word>
+        <word type="poper_name">
+        	<lemme>
+        		baptiste
+        	</lemme>
+        </word>
+        
+        <word type="verb">
+            <lemme flection="first_group">
+                mager
+            </lemme>
+        <word>
+        <word type="verb">
+            <lemme flection="third_group">
+                prendre
+            </lemme>
+        <word>
+        <word type="verb">
+            <lemme flection="first_group">
+                aimer
+            </lemme>
+        <word>
+    </words>
+
+</dictionary>
