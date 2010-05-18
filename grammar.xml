@@ -14,22 +14,27 @@
 		
         <group name="nominal">
 			<term>determinant</term>
-			<term>common_noun</term>
+			<separator/>
+            <term>common_noun</term>
 		</group>
 		
         <group name="verbal">
 			<term>verb</term>
-		</group>
+        </group>
 	
     <groups>
 
 	<sentences>
     
     	<sentence>
-			<group name="nomial" />
-			<group name="verbal" />
-			<group name="nominal" />
-		<sentence>
+            <starter>
+			<group name="nomial" grammar_type="subject" />
+            <separator/>
+            <group name="verbal" grammar_type="verb" />
+			<separator/>
+            <group name="nominal" grammar_type="direct_object" />
+	        <ender/>
+        <sentence>
     
     </sentences>
 </grammar>
