@@ -7,22 +7,29 @@
 -->
 <grammar>
 	<groups>
-		<group name="nominal">
-			<term>proper_name</term>
+	
+    	<group name="nominal">
+			<term>proper_noun</term>
 		</group>
-		<group name="nominal">
+		
+        <group name="nominal">
 			<term>determinant</term>
-			<term>common_name</term>
+			<term>common_noun</term>
 		</group>
-		<group name="verbal">
+		
+        <group name="verbal">
 			<term>verb</term>
 		</group>
-	<groups>
+	
+    <groups>
+
 	<sentences>
-		<sentence>
+    
+    	<sentence>
 			<group name="nomial" />
 			<group name="verbal" />
 			<group name="nominal" />
 		<sentence>
-	</sentences>
+    
+    </sentences>
 </grammar>

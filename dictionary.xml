@@ -11,31 +11,31 @@
 
 
     <words>
-        <word type="common_name">
-            <lemme flection="regular_common_name">
+        <word type="common_noun">
+            <lemme flection="regular_common_noun">
                 pomme
             </lemme>
         <word>
-        <word type="common_name">
-            <lemme flection="regular_common_name">
+        <word type="common_noun">
+            <lemme flection="regular_common_noun">
                 tarte
             </lemme>
         <word>
         
-        <word type="poper_name">
+        <word type="proper_noun">
         	<lemme>
-        		allan
+        		Allan
         	</lemme>
         </word>
-        <word type="poper_name">
+        <word type="proper_noun">
         	<lemme>
-        		baptiste
+        		Baptiste
         	</lemme>
         </word>
         
         <word type="verb">
             <lemme flection="first_group">
-                mager
+                manger
             </lemme>
         <word>
         <word type="verb">
