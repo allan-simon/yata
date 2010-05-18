@@ -52,18 +52,20 @@
             <lemme flection="regular_common_noun">
                 tarte
             </lemme>
-            <attribute>female</attribute>
+            <attribute type="gender">female</attribute>
         </word>
         
         <word type="proper_noun">
         	<lemme>
         		Allan
         	</lemme>
+            <attribute type="gender">male<attribute>
         </word>
         <word type="proper_noun">
         	<lemme>
         		Baptiste
         	</lemme>
+            <attribute type="gender">male<attribute>
         </word>
 
 
@@ -72,6 +74,8 @@
             <lemme flection="first_group">
                 manger
             </lemme>
+            <!-- define a kind of attributes to precise both valency and if it is transitive etc.-->
+            <attribute type></attribute>
         </word>
         <word type="verb">
             <lemme flection="third_group">
