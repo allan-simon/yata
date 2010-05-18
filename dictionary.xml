@@ -6,21 +6,54 @@
             <flection type="plural">
                 s/*/$0s/
             </flection>
-        </flection>
+        </flection_rule>
+
+        <flection_rule name="un">
+            <flection type="singular male"/>
+            <flection type="singular female">
+                s/*/$0e/ 
+            </flection>
+            <flection type="plural">
+                s/*/des/ 
+            </flection>
+        </flection_rule>
+    
+
+        <flection_rule name="first_group">
+            <flection type="infinitive"/>
+
+            <flection type="indicative present 1_person singular">s/(*)er/$1e/</flection>    
+            <flection type="indicative present 2_person singular">s/(*)er/$1es/</flection>    
+            <flection type="indicative present 3_person singular">s/(*)er/$1e/</flection>    
+        
+            <flection type="indicative present 1_person plural">s/(*)er/$1ons/</flection>    
+            <flection type="indicative present 2_person plural">s/(*)er/$1ez/</flection>    
+            <flection type="indicative present 3_person plural">s/(*)er/$1ent/</flection>    
+        </flection_rule>
+
     <all_flections>
 
 
     <words>
+        <word type="determinant">
+            <lemme flection="un">
+                un
+            </lemme>  
+        </word>
+
+
         <word type="common_noun">
             <lemme flection="regular_common_noun">
                 pomme
             </lemme>
-        <word>
+            <attribute>female</attribute>
+        </word>
         <word type="common_noun">
             <lemme flection="regular_common_noun">
                 tarte
             </lemme>
-        <word>
+            <attribute>female</attribute>
+        </word>
         
         <word type="proper_noun">
         	<lemme>
@@ -32,22 +65,24 @@
         		Baptiste
         	</lemme>
         </word>
+
+
         
         <word type="verb">
             <lemme flection="first_group">
                 manger
             </lemme>
-        <word>
+        </word>
         <word type="verb">
             <lemme flection="third_group">
                 prendre
             </lemme>
-        <word>
+        </word>
         <word type="verb">
             <lemme flection="first_group">
                 aimer
             </lemme>
-        <word>
+        </word>
     </words>
 
 </dictionary>
