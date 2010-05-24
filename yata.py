@@ -1,5 +1,6 @@
 import sys
 from optparse import OptionParser
+from sentenceParser import SentenceParser
 
 class Yata:
     @staticmethod
@@ -11,7 +12,7 @@ class Yata:
         #input mode
         parser.add_option(
             '--mode',
-            dest="inputMode",
+            dest="input_mode",
             choices=['true','false','question'],
             help="define the input mode",
             metavar="MODENAME"
@@ -20,7 +21,7 @@ class Yata:
         # languages
         parser.add_option(
             '--from',
-            dest="sourceLanguage",
+            dest="source_language",
             choices=['fra','eng'],
             help="define source language",
             metavar="LANG"
@@ -29,7 +30,7 @@ class Yata:
 
         parser.add_option(
             '--to',
-            dest="targetLanguage",
+            dest="target_language",
             choices=['fra','eng'],
             help="define target language",
             metavar="LANG"
@@ -39,7 +40,7 @@ class Yata:
 
         parser.add_option(
             '--from-sentence',
-            dest="sourceSentence",
+            dest="source_sentence",
             help="define source sentence",
             metavar="SENTENCE"
         );
@@ -47,7 +48,7 @@ class Yata:
 
         parser.add_option(
             '--to-sentence',
-            dest="targetSentence",
+            dest="target_sentence",
             help="define target sentence",
             metavar="SENTENCE"
         );
@@ -57,11 +58,11 @@ class Yata:
 
         #check all mandatory options are here
         mandatories = [
-            'targetLanguage',
-            'sourceLanguage',
-            'inputMode',
-            'targetSentence',
-            'sourceSentence'
+            'target_language',
+            'source_language',
+            'input_mode',
+            'target_sentence',
+            'source_sentence'
         ];
 
         for m in mandatories:
@@ -70,8 +71,8 @@ class Yata:
                 parser.print_help();
                 exit(-1);
 
-        print options.sourceSentence;
-        print options.targetSentence;
+        source_parser = SentenceParser(options.source_language, options.source_sentence);
+        print source_parser.original_text; 
 
 ##
 
