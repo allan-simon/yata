@@ -72,8 +72,7 @@ class Yata:
                 exit(-1);
 
         source_parser = SentenceParser(options.source_language, options.source_sentence);
-        print source_parser.original_text; 
-
+        source_parser.parse();
 ##
 
 if __name__ == "__main__" :

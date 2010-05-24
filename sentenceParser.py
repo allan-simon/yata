@@ -22,3 +22,8 @@ class SentenceParser:
     def original_text(self, original_text):
         self._original_text = original_text;
 
+
+    def parse(self):
+        words = self.original_text.split(" ");
+        for word in words:
+            print word;

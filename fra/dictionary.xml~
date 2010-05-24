@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+    <all_flections>
+        <flection_rule name="regular_common_name">
+            <flection type="singular"/>
+            <flection type="plural">
+                s/*/$0s/
+            </flection>
+        </flection_rule>
+
+        <flection_rule name="un">
+            <flection type="singular male"/>
+            <flection type="singular female">
+                s/*/$0e/ 
+            </flection>
+            <flection type="plural">
+                s/*/des/ 
+            </flection>
+        </flection_rule>
+    
+
+        <flection_rule name="first_group">
+            <flection type="infinitive"/>
+
+            <flection type="indicative present 1_person singular">s/(*)er/$1e/</flection>    
+            <flection type="indicative present 2_person singular">s/(*)er/$1es/</flection>    
+            <flection type="indicative present 3_person singular">s/(*)er/$1e/</flection>    
+        
+            <flection type="indicative present 1_person plural">s/(*)er/$1ons/</flection>    
+            <flection type="indicative present 2_person plural">s/(*)er/$1ez/</flection>    
+            <flection type="indicative present 3_person plural">s/(*)er/$1ent/</flection>    
+        </flection_rule>
+
+    <all_flections>
+
+
+    <words>
+        <word type="determinant">
+            <lemme flection="un">
+                un
+            </lemme>  
+        </word>
+
+
+        <word type="common_noun">
+            <lemme flection="regular_common_noun">
+                pomme
+            </lemme>
+            <attribute>female</attribute>
+        </word>
+        <word type="common_noun">
+            <lemme flection="regular_common_noun">
+                tarte
+            </lemme>
+            <attribute type="gender">female</attribute>
+        </word>
+        
+        <word type="proper_noun">
+        	<lemme>
+        		Allan
+        	</lemme>
+            <attribute type="gender">male<attribute>
+        </word>
+        <word type="proper_noun">
+        	<lemme>
+        		Baptiste
+        	</lemme>
+            <attribute type="gender">male<attribute>
+        </word>
+
+
+        
+        <word type="verb">
+            <lemme flection="first_group">
+                manger
+            </lemme>
+            <!-- define a kind of attributes to precise both valency and if it is transitive etc.-->
+            <attribute type></attribute>
+        </word>
+        <word type="verb">
+            <lemme flection="third_group">
+                prendre
+            </lemme>
+        </word>
+        <word type="verb">
+            <lemme flection="first_group">
+                aimer
+            </lemme>
+        </word>
+    </words>
+
+</dictionary>
