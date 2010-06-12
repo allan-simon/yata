@@ -1,3 +1,5 @@
+from dictionnaryParser import DictionnaryParser
+from lexer import Lexer
 
 class SentenceParser:
 
@@ -24,6 +26,19 @@ class SentenceParser:
 
 
     def parse(self):
+        dictParser = DictionnaryParser(self.lang);
+        dictParser.generate_graph();
         words = self.original_text.split(" ");
+
+        decomposedWords = [];
         for word in words:
-            print word;
+            try :
+                dictParser.graph[word];
+            except KeyError:
+                #if we face an unknown word we mark it 
+                decomposedWords.append((word,"unknown"));
+                continue;
+            decompositions = Lexer.analyse_word(word, dictParser.graph)
+            decomposedWords.append((word,decompositions))
+        print( decomposedWords);
+

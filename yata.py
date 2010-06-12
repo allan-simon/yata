@@ -67,7 +67,7 @@ class Yata:
 
         for m in mandatories:
             if not options.__dict__[m]:
-                print "mandatory option is missing\n";
+                print("mandatory option is missing\n");
                 parser.print_help();
                 exit(-1);
 
