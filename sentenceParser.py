@@ -6,6 +6,7 @@ class SentenceParser:
     def __init__ (self, lang, text):
         self._lang = lang;
         self._original_text = text;
+        self._decomposedWords = [];
 
 
     @property
@@ -24,21 +25,25 @@ class SentenceParser:
     def original_text(self, original_text):
         self._original_text = original_text;
 
+    @property
+    def decomposedWords(self):
+        return self._decomposedWords; 
+
 
     def parse(self):
         dictParser = DictionnaryParser(self.lang);
         dictParser.generate_graph();
         words = self.original_text.split(" ");
 
-        decomposedWords = [];
+        #decomposedWords = [];
         for word in words:
             try :
                 dictParser.graph[word];
             except KeyError:
                 #if we face an unknown word we mark it 
-                decomposedWords.append((word,"unknown"));
+                self._decomposedWords.append((word,"unknown"));
                 continue;
             decompositions = Lexer.analyse_word(word, dictParser.graph)
-            decomposedWords.append((word,decompositions))
-        print( decomposedWords);
+            self._decomposedWords.append((word,decompositions))
+        print( self._decomposedWords);
 
