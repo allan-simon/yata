@@ -1,4 +1,6 @@
 from dictionnaryParser import DictionnaryParser
+from grammarTagger import GrammarTagger
+from grammarParser import GrammarParser
 from lexer import Lexer
 
 class SentenceParser:
@@ -46,4 +48,10 @@ class SentenceParser:
             decompositions = Lexer.analyse_word(word, dictParser.graph)
             self._decomposedWords.append((word,decompositions))
         print( self._decomposedWords);
+
+        grammarParser = GrammarParser(self.lang);
+        grammarParser.parse_doml();
+        
+        grammarTagger = GrammarTagger(grammarParser.graph);
+        grammarTagger.tag(['nom_propre','verbe','determinant','nom_commun','groupe_nominal']);
 

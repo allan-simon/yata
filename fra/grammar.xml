@@ -4,38 +4,68 @@
 		this is an imcomplete file
 		the term markup is the type of word define in the dictionary.xml
 		Try to find out a better achitecture
+
+
+P
+P -> S sep V sep O .
+S->GN
+V->GV
+O->GN
+GN -> nom_propre|determinant separator nom_commun
+V -> verbe
+
+
+
+
+<P>
+    <possibility>
+        <starter/>    
+        <S/>
+        <sep>
+        <V/>
+        <sep>
+        <O/>
+        <ender>
+    </possibility>
+</P>
 -->
 <grammar>
+    <node name="phrase" type="final" id="p__suj_verb_cod">
+        <meta name="sujet"/>
+        <meta name="metaverbe"/>
+        <meta name="cod"/>
+    </node>
 
-	<groups>
-	
-    	<group name="nominal">
-			<term>proper_noun</term>
-		</group>
-		
-        <group name="nominal">
-			<term>determinant</term>
-			<separator/>
-            <term>common_noun</term>
-		</group>
-		
-        <group name="verbal">
-			<term>verb</term>
-        </group>
-	
-    <groups>
+    <node name="sujet" type="transitional" id="suj__gn" > 
+        <meta name="groupe_nominal"/>
+    </node>
 
-	<sentences>
+    <node name="cod" type="transitional" id="cod__gn"> 
+        <meta name="groupe_nominal"/>
+    </node>
+
+    <node name="metaverbe" type="transitional" id="metverb__gv"> 
+        <meta name="groupe_verbal"/>
+    </node>
+
+
+    <node name="groupe_verbal" type="transitional" id="gv__v">
+        <atom name="verbe"></atom>
+    </node>
     
-    	<sentence>
-            <starter>
-			<group name="nomial" grammar_type="subject" />
-            <separator/>
-            <group name="verbal" grammar_type="verb" />
-			<separator/>
-            <group name="nominal" grammar_type="direct_object" />
-	        <ender/>
-        <sentence>
+    <node name="groupe_nominal" type="transitional" id="gn__np">
+        <atom name="nom_propre"></atom>
+    </node>
     
-    </sentences>
+    <node name="groupe_nominal" type="transitional" id="gn__det_nc">
+        <atom name="determinant"></atom>
+        <atom name="nom_commun"></atom>
+    </node>
+
+    <node name="groupe_nominal" type="transitional" id="gn__gn_conj_gn">
+        <meta name="groupe_nominal"/>
+        <atom name="conjonction"></atom>
+        <meta name="groupe_nominal"/>
+    </node>
+
 </grammar>

@@ -1,6 +1,7 @@
 from xml.dom.minidom import parse
 from inflecter import Inflecter
 from word import Word
+from itertools import count
 from graph.base import Graph
 
 import sys
@@ -51,27 +52,49 @@ class DictionnaryParser:
     def graph(self):
         return self._graph;
 
+    def export_graph(self):
+        from graph.extras import dot
+        from subprocess import getstatusoutput
+
+        # build the drawing tool
+        drawer = dot.DotGenerator()
+
+        # populate the output file
+        with open('dot/dict.dot', 'w') as f:
+            output = drawer.draw(self.graph, "dict_graph")
+            f.write(output)
+
+        getstatusoutput("circo -Tgif -o picture/dict/dict.gif -v dot/dict.dot")
+
 
     def generate_graph(self):
         i = 0;
         for word in self.wordsDict:
+            # add the flexion
             self.graph.add_node(
                 name=word.lemme_node_name(),
                 node_type = "lemme",
+                node_lemme = word.lemme,
+                shape = "box",
+                color = "red",
                 node_word = word
             );
 
             if word.flection in self.inflectersDict:
                 wordFlexions = self.inflectersDict[word.flection].inflecte(word);
-                 
+
                 for tags, wordFlexion in wordFlexions.items():
                     if not wordFlexion in self.graph:
-                        ##print("add new node")
-                        self.graph.add_node(name=wordFlexion,node_type="flexion");
-                    #print(wordFlexion + ' '+ word.lemme_node_name());
-                    #print(tags)
+                        #if it's the first time we had this "form" we add the
+                        #flexion node
+                        self.graph.add_node(
+                            name=wordFlexion,
+                            node_type="flexion",
+                            shape ="box",
+                            color = "green",
+                        );
                     edgeName = i;
-                    #print(edgeName);
+                    
                     tempEdge = self.graph.add_edge(
                         wordFlexion,
                         word.lemme_node_name(),
@@ -79,11 +102,9 @@ class DictionnaryParser:
                         tags=tags.split(" "),
                         is_directed=False
                     );
-                    
-                    #print(tempEdge);
-                    #print();
+
                     i = i + 1; 
-            
+        self.export_graph();
         #self.draw();
 
     def draw(self):
@@ -122,13 +143,18 @@ class DictionnaryParser:
 
         return word;
 
+    # generate all flection from xml
     def generate_inflecter(self, inflecterNode):
         inflecter = Inflecter();
         for flection in inflecterNode.getElementsByTagName("flection"):
             tags = flection.getAttribute('type');
+            # add all possible regexp
             for flection_regexp in flection.getElementsByTagName('flection_regexp'):
+                #priority of the rule
                 priority = int(flection_regexp.getAttribute('priority'));
+                #matching regexp
                 from_lemme = flection_regexp.getElementsByTagName('from_lemme')[0].childNodes[0].data;
+                #resulting regexp
                 to_flexion = flection_regexp.getElementsByTagName('to_flexion')[0].childNodes[0].data;
                 inflecter.add_flection(tags, from_lemme, to_flexion, priority);
         return inflecter;

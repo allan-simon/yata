@@ -2,30 +2,38 @@
 <dictionary>
     <all_flections>
 
-        <flection_rule id="proper_noun" >
-            <flection type="singular male">
+        <flection_rule id="invariable">
+            <flection type="">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[\g<0>]]></to_flexion>
                 </flection_regexp>
             </flection>
-            <flection type="singular female">
-                <flection_regexp priority="0">
-                    <from_lemme><![CDATA[.*]]></from_lemme>
-                    <to_flexion><![CDATA[\g<0>]]></to_flexion>
-                </flection_regexp>
-            </flection>
-
-
         </flection_rule>
-        <flection_rule id="regular_common_noun">
-            <flection type="singular male">
+
+        <flection_rule id="nom_propre" >
+            <flection type="singulier masculin">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[\g<0>]]></to_flexion>
                 </flection_regexp>
             </flection>
-            <flection type="plural">
+            <flection type="singulier feminin">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[.*]]></from_lemme>
+                    <to_flexion><![CDATA[\g<0>]]></to_flexion>
+                </flection_regexp>
+            </flection>
+        </flection_rule>
+        
+        <flection_rule id="nom_commun_regulier">
+            <flection type="singulier masculin">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[.*]]></from_lemme>
+                    <to_flexion><![CDATA[\g<0>]]></to_flexion>
+                </flection_regexp>
+            </flection>
+            <flection type="pluriel">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[\g<0>s]]></to_flexion>
@@ -33,26 +41,28 @@
             </flection>
         </flection_rule>
 
+        <!-- PRONOM INDEFINI "UN" -->
+        
         <flection_rule id="un">
-            <flection type="singular male">
+            <flection type="singulier masculin">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[\g<0>]]></to_flexion>
                 </flection_regexp>
             </flection>
-            <flection type="singular female">
+            <flection type="singulier feminin">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[\g<0>e]]></to_flexion>
                 </flection_regexp>
             </flection>
-            <flection type="plural male">
+            <flection type="pluriel masculin">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[des]]></to_flexion>
                 </flection_regexp>
             </flection>
-            <flection type="plural male">
+            <flection type="pluriel masculin">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[des]]></to_flexion>
@@ -60,16 +70,17 @@
             </flection>
         </flection_rule>
     
+        <!-- VERBE PREMIER GROUPE -->
 
-        <flection_rule id="first_group">
-            <flection type="infinitive">
+        <flection_rule id="premier_groupe">
+            <flection type="infinitif">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[.*]]></from_lemme>
                     <to_flexion><![CDATA[\g<0>]]></to_flexion>
                 </flection_regexp>
             </flection>
 
-            <flection type="indicative present 1_person singular">
+            <flection type="indicatif present 1_personne singulier">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[(.*)er]]></from_lemme>
                     <to_flexion><![CDATA[\g<1>e]]></to_flexion>
@@ -77,21 +88,21 @@
             </flection>    
 
 
-            <flection type="indicative present 2_person singular">
+            <flection type="indicatif present 2_personne singulier">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[(.*)er]]></from_lemme>
                     <to_flexion><![CDATA[\g<1>es]]></to_flexion>
                 </flection_regexp>
             </flection>    
 
-            <flection type="indicative present 3_person singular">
+            <flection type="indicatif present 3_personne singulier">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[(.*)er]]></from_lemme>
                     <to_flexion><![CDATA[\g<1>e]]></to_flexion>
                 </flection_regexp>
             </flection>
  
-            <flection type="indicative present 1_person plural">
+            <flection type="indicatif present 1_personne pluriel">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[(.*)er]]></from_lemme>
                     <to_flexion><![CDATA[\g<1>ons]]></to_flexion>
@@ -105,14 +116,14 @@
             </flection>    
 
 
-            <flection type="indicative present 2_person plural">
+            <flection type="indicatif present 2_personne pluriel">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[(.*)er]]></from_lemme>
                     <to_flexion><![CDATA[\g<1>ez]]></to_flexion>
                 </flection_regexp>
             </flection>    
 
-            <flection type="indicative present 3_person plural">
+            <flection type="indicatif present 3_personne pluriel">
                 <flection_regexp priority="0">
                     <from_lemme><![CDATA[(.*)er]]></from_lemme>
                     <to_flexion><![CDATA[\g<1>ent]]></to_flexion>
@@ -121,6 +132,65 @@
         
        
         </flection_rule>
+
+
+        <!-- VERBE DEUXIEME GROUPE -->
+
+        <flection_rule id="deuxieme_groupe">
+            <flection type="infinitif">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[.*]]></from_lemme>
+                    <to_flexion><![CDATA[\g<0>]]></to_flexion>
+                </flection_regexp>
+            </flection>
+
+            <flection type="indicatif present 1_personne singulier">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[(.*)ir]]></from_lemme>
+                    <to_flexion><![CDATA[\g<1>is]]></to_flexion>
+                </flection_regexp>
+            </flection>    
+
+
+            <flection type="indicatif present 2_personne singulier">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[(.*)ir]]></from_lemme>
+                    <to_flexion><![CDATA[\g<1>is]]></to_flexion>
+                </flection_regexp>
+            </flection>    
+
+            <flection type="indicatif present 3_personne singulier">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[(.*)ir]]></from_lemme>
+                    <to_flexion><![CDATA[\g<1>it]]></to_flexion>
+                </flection_regexp>
+            </flection>
+ 
+            <flection type="indicatif present 1_personne pluriel">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[(.*)ir]]></from_lemme>
+                    <to_flexion><![CDATA[\g<1>issons]]></to_flexion>
+                </flection_regexp>
+            </flection>    
+
+
+            <flection type="indicatif present 2_personne pluriel">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[(.*)ir]]></from_lemme>
+                    <to_flexion><![CDATA[\g<1>issez]]></to_flexion>
+                </flection_regexp>
+            </flection>    
+
+            <flection type="indicatif present 3_personne pluriel">
+                <flection_regexp priority="0">
+                    <from_lemme><![CDATA[(.*)ir]]></from_lemme>
+                    <to_flexion><![CDATA[\g<1>issent]]></to_flexion>
+                </flection_regexp>
+            </flection>
+       
+        </flection_rule>
+
+
 
     </all_flections>
 
@@ -131,37 +201,57 @@
         </word>
 
 
-        <word type="common_noun">
-            <lemme flection="regular_common_noun">pomme</lemme>
-            <attribute type="gender">female</attribute>
+        <word type="nom_commun">
+            <lemme flection="nom_commun_regulier">pomme</lemme>
+            <attribute type="genre">feminin</attribute>
         </word>
-        <word type="common_noun">
-            <lemme flection="regular_common_noun">tarte</lemme>
-            <attribute type="gender">female</attribute>
-        </word>
-        
-        <word type="proper_noun">
-        	<lemme flection="proper_noun">Allan</lemme>
-            <attribute type="gender">male</attribute>
-        </word>
-        <word type="proper_noun">
-        	<lemme>Baptiste</lemme>
-            <attribute type="gender">male</attribute>
+        <word type="nom_commun">
+            <lemme flection="nom_commun_regulier">tarte</lemme>
+            <attribute type="genre">feminin</attribute>
         </word>
         
-        <word type="verb">
-            <lemme flection="first_group">manger</lemme>
+        <word type="nom_propre">
+        	<lemme flection="nom_propre">Allan</lemme>
+            <attribute type="genre">masculin</attribute>
+        </word>
+        <word type="nom_propre">
+        	<lemme flection="nom_propre">Baptiste</lemme>
+            <attribute type="genre">masculin</attribute>
+        </word>
+        
+        <word type="verbe">
+            <lemme flection="premier_groupe">manger</lemme>
             <!-- define a kind of attributes to precise both valency and if it is transitive etc.-->
         </word>
-        <word type="verb">
-            <lemme flection="third_group">prendre</lemme>
+        <word type="verbe">
+            <lemme flection="premier_groupe">aimer</lemme>
         </word>
-        <word type="verb">
-            <lemme flection="first_group">aimer</lemme>
+
+        <word type="verbe">
+            <lemme flection="premier_groupe">cuisiner</lemme>
         </word>
-        
-        <word type="verb">
-            <lemme flection="first_group">cuisiner</lemme>
+
+        <word type="verbe">
+            <lemme flection="premier_groupe">voyager</lemme>
+        </word>
+ 
+        <word type="verbe">
+            <lemme flection="deuxieme_groupe">finir</lemme>
+        </word>
+  
+        <word type="verbe">
+            <lemme flection="deuxieme_groupe">rôtir</lemme>
+        </word>
+       
+
+        <word type="verbe">
+            <lemme flection="troisieme_groupe">prendre</lemme>
+        </word>
+
+
+
+        <word type="conjonction">
+            <lemme flection="invariable">et</lemme>
         </word>
     </words>
 

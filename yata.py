@@ -6,7 +6,7 @@ class Yata:
     @staticmethod
     def run():
 
-        usage = "usage: %prog --mode MODENAME --from LANG --to LANG --from-sentences SENTENCE --to-sentence SENTENCE ";
+        usage = "usage: %prog --mode MODENAME --from LANG --to LANG --from-sentence SENTENCE --to-sentence SENTENCE ";
         parser = OptionParser(usage);
 
         #input mode
@@ -67,7 +67,7 @@ class Yata:
 
         for m in mandatories:
             if not options.__dict__[m]:
-                print("mandatory option is missing\n");
+                print("mandatory ", m, " option is missing\n");
                 parser.print_help();
                 exit(-1);
 
