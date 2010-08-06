@@ -41,18 +41,44 @@ class GrammarTagger:
                     connectorNode = taggingGraph.add_node( newConnectorName, **connector.data);
                     connectorNode.color = "red";
                     connectorNode.shape = "box";
+                    connectorNode.connected = True;
                 
-                topNode = taggingGraph.add_node( newTopNodeName , **topNode.data );
+                newTopNode = taggingGraph.add_node( newTopNodeName , **topNode.data );
                 #only for style
-                topNode.color = 'green';
-                topNode.shape = "box";
+                newTopNode.color = 'green';
+                newTopNode.shape = "box";
+                newTopNode.connected = False;
                 
-                print(taggingGraph.add_edge(
+                currentEdge = taggingGraph.add_edge(
                     newConnectorName,
                     newTopNodeName,
                     label = edge.order,
+                    order = edge.order,
                     is_directed=False,
-                ));
+                );
+                # now we had the non-connected terminal of the rule
+                j = 0;
+                for outgoingEdge in topNode.outgoing:
+                    if currentEdge.order == outgoingEdge.order:
+                        j += 1;
+                        continue
+                    
+                    unconnectedAtom = outgoingEdge.other_end(topNode);
+                    tempNodeName = unconnectedAtom.name + "_" + str(j) + str(i);
+                    unconnectedTagNode = taggingGraph.add_node(tempNodeName, **unconnectedAtom.data)
+                    unconnectedTagNode.color = "blue";
+                    unconnectedTagNode.shape = "box";
+                    unconnectedTagNode.connected = False;
+
+                    taggingGraph.add_edge(
+                        tempNodeName,
+                        newTopNodeName,
+                        label = outgoingEdge.order,
+                        order = outgoingEdge.order,
+                        is_directed = False
+                    )
+
+                    j += 1;
 
                 ruleName = topNode.name
                 category = topNode.category
@@ -62,7 +88,10 @@ class GrammarTagger:
                 );
                 i += 1;
             taggingDict.append((tag,connectorsList));
- 
+        self.export_graph(taggingGraph, 1);
+
+    def export_graph(self, taggingGraph, step) :
+        
         #print(taggingDict);
         from graph.extras import dot
         from subprocess import getstatusoutput
@@ -77,11 +106,5 @@ class GrammarTagger:
 
         getstatusoutput("dot -Tgif -o picture/tag/tagging_graph.gif -v dot/tagging_graph.dot")
 
-
-    def clone_node(self, node):
-
-
-        return 0;
-
-
+       
 
