@@ -84,11 +84,15 @@ class GrammarTagger:
                 category = topNode.category
                 position = edge.order
                 connectorsList.append(
-                    (ruleName, category, position)
+                    newTopNodeName
                 );
                 i += 1;
-            taggingDict.append((tag,connectorsList));
+            taggingDict.append(connectorsList);
         self.export_graph(taggingGraph, 1);
+        print(taggingDict);
+        self.validate_rule(taggingGraph, taggingDict);
+        self.export_graph(taggingGraph, 2);
+
 
     def export_graph(self, taggingGraph, step) :
         
@@ -100,11 +104,35 @@ class GrammarTagger:
         drawer = dot.DotGenerator()
 
         # populate the output file
-        with open('dot/tagging_graph.dot', 'w') as f:
+        name = "tagging_graph" + str(step);
+        with open('dot/' + name + '.dot', 'w') as f:
             output = drawer.draw(taggingGraph, "tag_graph")
             f.write(output)
 
-        getstatusoutput("dot -Tgif -o picture/tag/tagging_graph.gif -v dot/tagging_graph.dot")
+        getstatusoutput("dot -Tgif -o picture/tag/"+name+".gif -v dot/"+name+".dot")
 
        
+
+    # stage 2 validate rule having all its node connectec
+    def validate_rule(self, taggingGraph, taggingDict):
+        print()
+        print()
+        print("stage 2");
+        print()
+        print()
+        for position in taggingDict:
+            for rule in position:
+                ruleNode = taggingGraph[rule];
+                allConnected = True;
+                for edge in ruleNode.incoming:
+                    atomNode = edge.start;
+                    if not atomNode.connected:
+                        allConnected = False;
+                        break;
+                if allConnected :
+                    ruleNode.connected = True;
+                    ruleNode.color= "red";
+                print(ruleNode);
+        return 0;
+
 
