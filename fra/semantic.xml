@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Note to Biptaste:
+		You must make a better work !	
+-->
+<semantic>
+	<node>
+		<lang>
+			<word type="nom_commun" id="1" />
+			<word type="verbes_impliquant_un_heritage" />
+			<word type="determinant_non_defini" />
+			<word type="nom_commun" id="1" />
+		</lan>
+		<sem>
+			<object id="1" /><isa /><class id="2" />
+		</sem>
+	</node>
+
+	<word type="verbes_impliquant_heritage">
+		<lemme>être</lemme>
+	</word>
+	<word type="determinant_non_defini">
+		<lemme>un</lemme>
+	</word>
+</semantic>
