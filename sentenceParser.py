@@ -53,5 +53,5 @@ class SentenceParser:
         grammarParser.parse_doml();
         
         grammarTagger = GrammarTagger(grammarParser.graph);
-        grammarTagger.tag(['nom_propre','verbe','determinant','nom_commun','groupe_nominal']);
+        grammarTagger.tag(['nom_propre','verbe','determinant','nom_commun','determinant','groupe_nominal']);
 

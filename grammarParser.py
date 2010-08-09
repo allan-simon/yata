@@ -49,10 +49,10 @@ class GrammarParser:
                 #add top node
                 tempTopNode = self.graph.add_node(
                     name= id,
-                    type= type,
+                    type= nodeName,
                     shape = "box",
                     color = "red",
-                    category= nodeName
+                    position= nodeName
                 )
                 #add child node and link
                 order = 0;
