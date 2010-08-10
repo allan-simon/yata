@@ -30,42 +30,42 @@ V -> verbe
 </P>
 -->
 <grammar>
-    <node name="phrase" type="final" id="p__suj_verb_cod">
-        <meta name="sujet"/>
-        <meta name="metaverbe"/>
-        <meta name="cod"/>
+    <node type="phrase"  category="top" position="final" id="p__suj_verb_cod">
+        <meta  category="child" type="sujet"/>
+        <meta  category="child" type="metaverbe"/>
+        <meta  category="child" type="cod"/>
     </node>
 
-    <node name="sujet" type="transitional" id="suj__gn" > 
-        <meta name="groupe_nominal"/>
+    <node type="sujet"  category="top" position="transitional" id="suj__gn" > 
+        <meta  category="child" type="groupe_nominal"/>
     </node>
 
-    <node name="cod" type="transitional" id="cod__gn"> 
-        <meta name="groupe_nominal"/>
+    <node type="cod"  category="top" position="transitional" id="cod__gn"> 
+        <meta  category="child" type="groupe_nominal"/>
     </node>
 
-    <node name="metaverbe" type="transitional" id="metverb__gv"> 
-        <meta name="groupe_verbal"/>
+    <node type="metaverbe"  category="top" position="transitional" id="metverb__gv"> 
+        <meta  category="child" type="groupe_verbal"/>
     </node>
 
 
-    <node name="groupe_verbal" type="transitional" id="gv__v">
-        <atom name="verbe"></atom>
+    <node type="groupe_verbal"  category="top" position="begin" id="gv__v">
+        <atom  category="child" type="verbe"></atom>
     </node>
     
-    <node name="groupe_nominal" type="transitional" id="gn__np">
-        <atom name="nom_propre"></atom>
+    <node type="groupe_nominal"  category="top" position="begin" id="gn__np">
+        <atom  category="child" type="nom_propre"></atom>
     </node>
     
-    <node name="groupe_nominal" type="transitional" id="gn__det_nc">
-        <atom name="determinant"></atom>
-        <atom name="nom_commun"></atom>
+    <node type="groupe_nominal"  category="top" position="begin" id="gn__det_nc">
+        <atom  category="child" type="determinant"></atom>
+        <atom  category="child" type="nom_commun"></atom>
     </node>
 
-    <node name="groupe_nominal" type="transitional" id="gn__gn_conj_gn">
-        <meta name="groupe_nominal"/>
-        <atom name="conjonction"></atom>
-        <meta name="groupe_nominal"/>
+    <node type="groupe_nominal" category="top" position="begin" id="gn__gn_conj_gn">
+        <meta category="child" type="groupe_nominal"/>
+        <atom category="child" type="conjonction"></atom>
+        <meta category="child" type="groupe_nominal"/>
     </node>
 
 </grammar>

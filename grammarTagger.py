@@ -8,6 +8,7 @@ class GrammarTagger:
     def __init__(self, graph):
         self._structure_graph = graph;
         self.taggingList = [];
+        self.id = 0;
 
     @property
     def structureGraph(self):
@@ -23,45 +24,59 @@ class GrammarTagger:
         self.export_graph(taggingGraph, step);
         step += 1;
        
-        while step <7:
+        while step < 20 :
             # we add rules
             self.add_rule(taggingGraph, validatedList);
             self.export_graph(taggingGraph, step);
             step += 1;
-            print("end rule 1");
+            print("END ADD_RULE ", step);
             print(self.taggingList);
             # we validate some rules
             self.validate_rule(taggingGraph);
             self.export_graph(taggingGraph, step);
             step += 1;
-
+            print("END VALIDATE_RULE", step);
             # remove rule which have a children impossible to connect in current sentence
             self.remove_impossible_rule(taggingGraph);
             self.export_graph(taggingGraph, step);
             step += 1;
+            print("END REMOVE_IMPOSSIBLE", step);
 
             # we fusion rules
             self.fusion_rule(taggingGraph);
             self.export_graph(taggingGraph, step);
             step += 1;
+            print("END FUSION", step);
 
             # we validate rules (as some could have changed with fusion)
             self.validate_rule(taggingGraph);
             self.export_graph(taggingGraph, step);
             step += 1;
+            print("END VALIDATE", step);
 
             # we remove rules that are left without children after fusion
             self.remove_non_connected_rule(taggingGraph);
             self.export_graph(taggingGraph, step);
             step += 1;
-
+            print("END REMOVE NON CONNECTED", step);
             #prepare new turn
             validatedList = self.prepare_new_base(taggingGraph);
-
+            if not validatedList:
+                break;
             print();
+            print(validatedList);
             print('final');
             print();
-            print(tagsList);
+            print();
+            print();
+            print();
+            print();
+            print();
+            print();
+            print();
+            print();
+            print();
+            print();
 
     def export_graph(self, taggingGraph, step) :
         
@@ -78,20 +93,22 @@ class GrammarTagger:
             output = drawer.draw(taggingGraph, "tag_graph")
             f.write(output)
 
-        getstatusoutput("dot -Tgif -o picture/tag/"+name+".gif -v dot/"+name+".dot")
+        getstatusoutput("dot -Tsvg -o picture/tag/"+name+".svg -v dot/"+name+".dot")
 
     def add_atoms(self, taggingGraph, atoms):
         i = 0;
         addedList = [];
         for atomType in atoms:
-            newConnectorName = atomType + "_" + str(i) #uuid4().hex;
-            connectors = self.structureGraph.search_nodes(type=atomType)
+            newConnectorName = atomType + "_" + str(self.id) #uuid4().hex;
+            self.id += 1;
+            connectors = self.structureGraph.search_nodes(type=atomType, category="child")
             for connector in connectors:
                 if newConnectorName not in taggingGraph:
                     connectorNode = taggingGraph.add_node( newConnectorName, **connector.data);
-                    connectorNode.color = "red";
+                    connectorNode.color = "violet";
                     connectorNode.shape = "box";
                     connectorNode.connected = True;
+                    connectorNode.validated = False;
                     addedList.append([newConnectorName]);
                     break;
             i += 1;
@@ -104,40 +121,39 @@ class GrammarTagger:
         for position in validatedList:
             for tag in position:
                 atomNode = taggingGraph[tag];
-                print();
-                print();
-                print();
-                print();
-                print(atomNode);
-                print();
-                print();
-                print();
-                print();
-                print();
 
-
-                connectors = self.structureGraph.search_nodes(type=atomNode.type)
+                atomNode.validated = True;
+                atomNode.color = "red";
+                connectors = self.structureGraph.search_nodes(type=atomNode.type, category="child")
                 connectorsList = [];
 
             
                 for connector in connectors:
-                    print(connector); 
-                    edge = connector.outgoing[0];
-                    topNode = edge.other_end(connector);
+                    edge = connector.incoming[0];
+                    topNode = edge.start#other_end(connector);
+                    #TODO this is a hack
+                    #we test if the rule does not already exist
+                    #ruleAlreadyConnected = False;
+                    #for topEdge in atomNode.incoming:
+                    #   if topNode.rule_id == topEdge.start.rule_id:
+                    #        ruleAlreadyConnected = True;
+                    #        break;
+                    #if ruleAlreadyConnected:
+                    #    continue;
                     #print(connector);
                     #print(topNode);
                     # We add in the sentence's graph the element (connector) and the
                     # group (top Node)
-                    newTopNodeName = topNode.name + "_" + str(i) # uuid4().hex;
-
+                    newTopNodeName = topNode.name + "_" + str(self.id) # uuid4().hex;
+                    self.id += 1;
                     
                     #we add the rule Node which current node can be part of
                     newTopNode = taggingGraph.add_node( newTopNodeName , **topNode.data );
                     #only for style
                     newTopNode.color = 'green';
                     newTopNode.shape = "box";
-                    newTopNode.rule_id = topNode.name;
                     newTopNode.connected = False;
+                    newTopNode.validated = False;
                     
 
                     # now we had the non-connected terminal of the rule
@@ -154,11 +170,12 @@ class GrammarTagger:
                             continue
                         
                         unconnectedAtom = outgoingEdge.other_end(topNode);
-                        tempNodeName = unconnectedAtom.name + "_" + str(j) + str(i);
+                        tempNodeName = unconnectedAtom.name + "_" + str(j) + str(self.id);
                         unconnectedTagNode = taggingGraph.add_node(tempNodeName, **unconnectedAtom.data)
                         unconnectedTagNode.color = "blue";
                         unconnectedTagNode.shape = "box";
                         unconnectedTagNode.connected = False;
+                        unconnectedTagNode.validated = False;
 
                         taggingGraph.add_edge(
                             newTopNodeName,
@@ -172,11 +189,11 @@ class GrammarTagger:
                     connectorsList.append(
                         newTopNodeName
                     );
-                    print('dede');
-                    print(connectorsList);
+                    #print('dede');
+                    #print(connectorsList);
                     i += 1;
                 self.taggingList.append(connectorsList);
-                print(self.taggingList);
+                #print(self.taggingList);
 
     # stage 2 validate rule having all its node connected
     def validate_rule(self, taggingGraph):
@@ -185,6 +202,7 @@ class GrammarTagger:
         print("stage 2");
         print()
         print()
+        print(self.taggingList);
         for position in self.taggingList:
             for rule in position:
                 ruleNode = taggingGraph[rule];
@@ -196,8 +214,8 @@ class GrammarTagger:
                         break;
                 if allConnected :
                     ruleNode.connected = True;
-                    ruleNode.color= "red";
-                print(ruleNode);
+                    ruleNode.color= "violet";
+                #print(ruleNode);
         return 0;
 
     # stage 3 fusion same occurence of a rule which different
@@ -218,9 +236,9 @@ class GrammarTagger:
                 if ruleNode.connected == True:
                     break;
                 ruleId = ruleNode.rule_id;
-                print(ruleInstance)
+                #print(ruleInstance)
                 for atomEdge in ruleNode.outgoing:
-                    print(atomEdge);
+                    #print(atomEdge);
                     if atomEdge.end.connected == False:
                         break;
                     lastConnected +=1;
@@ -230,7 +248,7 @@ class GrammarTagger:
                         nextRuleNode = taggingGraph[nextRule];
                         if nextRuleNode.rule_id != ruleId:
                             break;
-                        print("possible fusion");
+                        #print("possible fusion");
                         for nextAtomEdge in nextRuleNode.outgoing:
                             nextAtomNode = nextAtomEdge.end;
                             if nextAtomEdge.order < lastConnected:
@@ -282,6 +300,7 @@ class GrammarTagger:
                         atomNode = edge.end;
                         taggingGraph.remove_edge(edge);
                         taggingGraph.remove_node(atomNode);
+                    print("## we remove cause orphan",ruleNode);
                     taggingGraph.remove_node(ruleNode);
                     position.remove(ruleInstance);
                     j -= 1;
@@ -310,16 +329,16 @@ class GrammarTagger:
             while j < nbrRuleInstance:
                 ruleInstance = position[j];
                 ruleNode = taggingGraph[ruleInstance];
-                if ruleNode.connected:
+                if ruleNode.connected or ruleNode.position != "begin":
                     j +=1
                     continue;
-                print(ruleInstance); 
+                #print(ruleInstance); 
                 #then removed rule which are looking for an atom which is not present
                 atomNodeFound = False;
                 for edge in ruleNode.outgoing:
                     atomNode = edge.end;
                     if not atomNode.connected:
-                        if atomNode.category == "atom":
+                        if atomNode.isAtom:
                             for foudNode in taggingGraph.search_nodes(type = atomNode.type, connected = True):
                                 atomNodeFound = True;
                                 break;
@@ -331,6 +350,8 @@ class GrammarTagger:
                         taggingGraph.remove_edge(edge);
                         if not atomNode.connected:
                             taggingGraph.remove_node(atomNode);
+                    
+                    print("## we remove impossible ",ruleNode);
                     taggingGraph.remove_node(ruleNode);
                     position.remove(ruleInstance);
                     j -= 1;
@@ -347,14 +368,14 @@ class GrammarTagger:
         for position in self.taggingList:
             tempTupple = [];
             for ruleInstance in position:
-                print(ruleInstance);
+                #print(ruleInstance);
                 ruleNode = taggingGraph[ruleInstance];
-                if ruleNode.connected:
-                    print("pouet");
+                if ruleNode.connected and not ruleNode.validated:
+                    #print("pouet");
                     tempTupple.append(ruleInstance);
-                    print(tempTupple);
+                    #print(tempTupple);
             if tempTupple:
                 tagsList.append(tempTupple)
-                print("prout");
-                print(tagsList);
+                #print("prout");
+                #print(tagsList);
         return tagsList;

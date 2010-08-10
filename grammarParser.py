@@ -42,42 +42,45 @@ class GrammarParser:
         allNodes = self.doml.getElementsByTagName('node');
         i = 0;
         for node in allNodes:
-            nodeName = node.getAttribute('name');
+            nodeType = node.getAttribute('type');
             id =node.getAttribute('id');
-            for type in node.getAttribute('type').split(' '):
-               
-                #add top node
-                tempTopNode = self.graph.add_node(
-                    name= id,
-                    type= nodeName,
+            positionRule = node.getAttribute('position');
+            category = node.getAttribute('category');
+            #add top node
+            tempTopNode = self.graph.add_node(
+                name = id,
+                rule_id= id,
+                type= nodeType,
+                shape = "box",
+                color = "red",
+                category = category,
+                position = positionRule
+            )
+            #add child node and link
+            order = 0;
+            for child in node.childNodes:
+                if isinstance(child, Text):
+                    continue
+                typeChild = child.getAttribute('type');
+                categoryChild = child.getAttribute('category');
+                isAtom = (child.tagName == "atom") ;
+                tempNode = self.graph.add_node(
+                    name= typeChild + child.tagName + str(i),
+                    type = typeChild,
+                    isAtom = isAtom,
+                    category = categoryChild,
                     shape = "box",
-                    color = "red",
-                    position= nodeName
+                    color = "green"
                 )
-                #add child node and link
-                order = 0;
-                for child in node.childNodes:
-                    if isinstance(child, Text):
-                        continue
-                    name = child.getAttribute('name');
-                    tagName = child.tagName;
-                    tempNode = self.graph.add_node(
-                        name= name + tagName + str(i),
-                        type = name,
-                        category = tagName,
-                        shape = "box",
-                        color = "green"
-                    )
-                    i = i + 1;
-                    self.graph.add_edge(
-                        tempTopNode,
-                        tempNode,
-                        order = order,
-                        label = order,
-                        is_directed= False
-                    );
+                i = i + 1;
+                self.graph.add_edge(
+                    tempTopNode,
+                    tempNode,
+                    order = order,
+                    label = order,
+                );
 
-                    order = order + 1;
+                order = order + 1;
         self.export_graph();
 
     def export_graph(self):
