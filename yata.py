@@ -1,10 +1,12 @@
 import sys
+import logging
 from optparse import OptionParser
 from sentenceAnalyser import SentenceAnalyser
 
-"""This class is the entry point for yata command line."""
 
 class Yata:
+	"""This class is the entry point for yata command line."""
+
 	@staticmethod
 	def run():
 
@@ -55,6 +57,14 @@ class Yata:
 			metavar="SENTENCE"
 		)
 
+		# debug
+		parser.add_option(
+			'-d', '--debug',
+			action='store_true',
+			dest="debug",
+			default=False,
+			help="Display debug messages"
+		)
 
 		(options, args) = parser.parse_args()
 
@@ -72,6 +82,22 @@ class Yata:
 				print("mandatory ", m, " option is missing\n")
 				parser.print_help()
 				exit(-1)
+
+		# logging
+		ch = logging.StreamHandler()
+		if options.debug:
+			ch.setLevel(logging.DEBUG)
+		else:
+			ch.setLevel(logging.ERROR)
+
+		formatter = logging.Formatter('%(levelname)s - %(name)s : %(message)s')
+		ch.setFormatter(formatter)
+
+		logger = logging.getLogger('yata')
+		logger.setLevel(logging.DEBUG)
+		logger.addHandler(ch)
+
+		logger.debug('You run in debug mode.')
 
 		# Launch the analyse of the sentence
 		SentenceAnalyser.run(options)

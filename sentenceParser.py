@@ -1,9 +1,12 @@
+import logging
 from dictionnaryParser import DictionnaryParser
 from lexer import Lexer
 
-"""This class decompose sentence in a list of tagged word."""
+# debug
+logger = logging.getLogger('yata.SentenceParser')
 
 class SentenceParser:
+	"""This class decompose sentence in a list of tagged word."""
 
 	def __init__ (self, lang, text):
 		self._lang = lang
@@ -51,6 +54,6 @@ class SentenceParser:
 			self._decomposedWords.append((word,decompositions))
 
 		# debug message
-		print( self._decomposedWords)
+		logger.debug(self._decomposedWords)
 
 

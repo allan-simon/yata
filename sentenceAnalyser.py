@@ -2,9 +2,9 @@ from sentenceParser import SentenceParser
 from grammarParser import GrammarParser
 from grammarTagger import GrammarTagger
 
-"""This class is the proccess to analyse a sentence """
 
 class SentenceAnalyser:
+	"""This class is the proccess to analyse a sentence """
 
 	@staticmethod
 	def run(options):
