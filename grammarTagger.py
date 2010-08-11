@@ -120,7 +120,6 @@ class GrammarTagger:
         i = 0
         self.taggingList = [];
         for position in validatedList:
-            positionList = [];
             for tag in position:
                 atomNode = taggingGraph[tag]
                 if not atomNode.connected:
@@ -195,8 +194,8 @@ class GrammarTagger:
                     #print('dede')
                     #print(connectorsList)
                     i += 1
-                positionList.append(connectorsList)
-            self.taggingList.append(positionList)#print(self.taggingList)
+                self.taggingList.append(connectorsList)
+            #self.taggingList.append(positionList)#print(self.taggingList)
 
     # stage 2 validate rule having all its node connected
     def validate_rule(self, taggingGraph):
