@@ -24,7 +24,7 @@ class GrammarTagger:
         self.export_graph(taggingGraph, step)
         step += 1
        
-        while step < 20 :
+        while step < 50 :
             # we add rules
             self.add_rule(taggingGraph, validatedList)
             self.export_graph(taggingGraph, step)
@@ -43,22 +43,25 @@ class GrammarTagger:
             step += 1
 
             # we fusion rules
-            self.fusion_rule(taggingGraph)
-            self.export_graph(taggingGraph, step)
-            print("END FUSION", step)
-            step += 1
+            aFusionDone = True
+            while aFusionDone:
+                aFusionDone = self.fusion_rule(taggingGraph)
+                self.export_graph(taggingGraph, step)
+                print("END FUSION", step)
+                step += 1
 
-            # we validate rules (as some could have changed with fusion)
-            self.validate_rule(taggingGraph)
-            self.export_graph(taggingGraph, step)
-            print("END VALIDATE", step)
-            step += 1
+                # we validate rules (as some could have changed with fusion)
+                self.validate_rule(taggingGraph)
+                self.export_graph(taggingGraph, step)
+                print("END VALIDATE", step)
+                step += 1
 
-            # we remove rules that are left without children after fusion
-            self.remove_non_connected_rule(taggingGraph)
-            self.export_graph(taggingGraph, step)
-            print("END REMOVE NON CONNECTED", step)
-            step += 1
+                # we remove rules that are left without children after fusion
+                self.remove_non_connected_rule(taggingGraph)
+                self.export_graph(taggingGraph, step)
+                print("END REMOVE NON CONNECTED", step)
+                step += 1
+                print( self.taggingList)
             #prepare new turn
             validatedList = self.prepare_new_base(taggingGraph)
             if not validatedList:
@@ -66,9 +69,6 @@ class GrammarTagger:
             print()
             print(validatedList)
             print('final')
-            print()
-            print()
-            print()
             print()
             print()
             print()
@@ -118,8 +118,9 @@ class GrammarTagger:
 
     def add_rule(self, taggingGraph, validatedList):
         i = 0
-        self.taggingList = [];
+        self.taggingList = []
         for position in validatedList:
+            connectorsList = []
             for tag in position:
                 atomNode = taggingGraph[tag]
                 if not atomNode.connected:
@@ -127,23 +128,12 @@ class GrammarTagger:
                 atomNode.validated = True
                 atomNode.color = "red"
                 connectors = self.structureGraph.search_nodes(type=atomNode.type, category="child")
-                connectorsList = []
 
             
                 for connector in connectors:
                     edge = connector.incoming[0]
                     topNode = edge.start#other_end(connector)
-                    #TODO this is a hack
-                    #we test if the rule does not already exist
-                    #ruleAlreadyConnected = False
-                    #for topEdge in atomNode.incoming:
-                    #   if topNode.rule_id == topEdge.start.rule_id:
-                    #        ruleAlreadyConnected = True
-                    #        break
-                    #if ruleAlreadyConnected:
-                    #    continue
-                    #print(connector)
-                    #print(topNode)
+                    
                     # We add in the sentence's graph the element (connector) and the
                     # group (top Node)
                     newTopNodeName = topNode.name + "_" + str(self.id) # uuid4().hex
@@ -157,7 +147,7 @@ class GrammarTagger:
                     newTopNode.connected = False
                     newTopNode.validated = False
                     
-
+                    import uuid
                     # now we had the non-connected terminal of the rule
                     j = 0
                     for outgoingEdge in topNode.outgoing:
@@ -165,6 +155,7 @@ class GrammarTagger:
                             currentEdge = taggingGraph.add_edge(
                                 newTopNodeName,
                                 tag,
+                                name = uuid.uuid4().hex,
                                 label = edge.order,
                                 order = edge.order,
                             )
@@ -182,19 +173,20 @@ class GrammarTagger:
                         taggingGraph.add_edge(
                             newTopNodeName,
                             tempNodeName,
+                            name = uuid.uuid4().hex,
                             label = outgoingEdge.order,
                             order = outgoingEdge.order,
                         )
 
                         j += 1
-                    print("add ",newTopNodeName);
+                    print("add ",newTopNodeName)
                     connectorsList.append(
                         newTopNodeName
                     )
                     #print('dede')
                     #print(connectorsList)
                     i += 1
-                self.taggingList.append(connectorsList)
+            self.taggingList.append(connectorsList)
             #self.taggingList.append(positionList)#print(self.taggingList)
 
     # stage 2 validate rule having all its node connected
@@ -206,11 +198,11 @@ class GrammarTagger:
         print()
         print(self.taggingList)
         for position in self.taggingList:
-            print("\t",position);
+            print("\t",position)
             for rule in position:
-                print("\t\t",rule);
+                print("\t\t",rule)
                 ruleNode = taggingGraph[rule]
-                print("\t\t",ruleNode);
+                print("\t\t",ruleNode)
                 allConnected = True
                 if ruleNode.connected:
                     continue
@@ -235,6 +227,7 @@ class GrammarTagger:
         print()
         print()
         i = 0
+        aFusionDone = False
         for position in self.taggingList:
             for ruleInstance in position: 
                 lastConnected = 0
@@ -244,19 +237,22 @@ class GrammarTagger:
                 if ruleNode.connected == True:
                     break
                 ruleId = ruleNode.rule_id
-                #print(ruleInstance)
+                print(ruleInstance)
                 for atomEdge in ruleNode.outgoing:
                     #print(atomEdge)
                     if atomEdge.end.connected == False:
                         break
                     lastConnected +=1
                 if lastConnected != 0 :
-                    nextPosition = self.taggingList[i+1]
+                    try:
+                        nextPosition = self.taggingList[i+1]
+                    except IndexError:
+                        return aFusionDone
                     for nextRule in nextPosition:
                         nextRuleNode = taggingGraph[nextRule]
                         if nextRuleNode.rule_id != ruleId:
                             break
-                        #print("possible fusion")
+                        print("possible fusion")
                         for nextAtomEdge in nextRuleNode.outgoing:
                             nextAtomNode = nextAtomEdge.end
                             if nextAtomEdge.order < lastConnected:
@@ -265,16 +261,26 @@ class GrammarTagger:
                             else:
                                 if nextAtomNode.connected == False:
                                     break
-                                nextAtomNode.connected = False
-                                nextAtomNode.color = "blue"
                                 
-                                tempNode = ruleNode.outgoing[nextAtomEdge.order].end
-                                tempNode.connected = True
-                                tempNode.color = "red"
+                                #nextAtomNode.connected = False
+                                #nextAtomNode.color = "blue"
+                                outgoingEdge = ruleNode.outgoing[nextAtomEdge.order]
+                                tempNode = outgoingEdge.end
+                                print(outgoingEdge)
+
+                                tempNode._incoming[tempNode.incoming.index(outgoingEdge)] = nextAtomEdge
+                                nextAtomEdge._end = tempNode
+
+                                nextAtomNode._incoming[nextAtomNode.incoming.index(nextAtomEdge)] = outgoingEdge
+                                outgoingEdge._end = nextAtomNode
+                                #tempNode.connected = True
+                                #tempNode.color = "red"
+                                aFusionDone = True
 
 
 
             i += 1
+        return aFusionDone
 
     def remove_non_connected_rule(self,taggingGraph):
         print()
@@ -340,7 +346,6 @@ class GrammarTagger:
                 if ruleNode.connected or ruleNode.position != "begin":
                     j +=1
                     continue
-                #print(ruleInstance); 
                 #then removed rule which are looking for an atom which is not present
                 atomNodeFound = False
                 for edge in ruleNode.outgoing:
@@ -379,12 +384,10 @@ class GrammarTagger:
                 #print(ruleInstance)
                 ruleNode = taggingGraph[ruleInstance]
                 if ruleNode.connected and not ruleNode.validated:
-                    #print("pouet")
-                    print("append ", ruleInstance);
+                    print("append ", ruleInstance)
                     tempTupple.append(ruleInstance)
                     #print(tempTupple)
             if tempTupple:
                 tagsList.append(tempTupple)
-                #print("prout")
                 #print(tagsList)
         return tagsList
