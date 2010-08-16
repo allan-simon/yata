@@ -8,6 +8,8 @@ class GrammarTagger:
     def __init__(self, graph):
         self._structure_graph = graph
         self.taggingList = []
+        self.initialAtomsNbr = 0;
+        self.atomNbrInTree = 0;
         self.id = 0
 
     @property
@@ -18,12 +20,15 @@ class GrammarTagger:
     def tag(self, tagsList):
         taggingGraph = Graph()
         self.taggingList =[]
+        self.initialAtomsNbr = len(tagsList);
         step = 0
         #we add atoms
         validatedList = self.add_atoms(taggingGraph, tagsList)
         self.export_graph(taggingGraph, step)
         step += 1
-       
+
+        isFinished = False;
+
         while step < 50 :
             # we add rules
             self.add_rule(taggingGraph, validatedList)
@@ -32,9 +37,11 @@ class GrammarTagger:
             step += 1
             print(self.taggingList)
             # we validate some rules
-            self.validate_rule(taggingGraph)
+            isFinished = self.validate_rule(taggingGraph)
             self.export_graph(taggingGraph, step)
             print("END VALIDATE_RULE", step)
+            if isFinished :
+                break;
             step += 1
             # remove rule which have a children impossible to connect in current sentence
             self.remove_impossible_rule(taggingGraph)
@@ -51,9 +58,11 @@ class GrammarTagger:
                 step += 1
 
                 # we validate rules (as some could have changed with fusion)
-                self.validate_rule(taggingGraph)
+                isFinished = self.validate_rule(taggingGraph)
                 self.export_graph(taggingGraph, step)
                 print("END VALIDATE", step)
+                if isFinished :
+                    break;
                 step += 1
 
                 # we remove rules that are left without children after fusion
@@ -62,6 +71,7 @@ class GrammarTagger:
                 print("END REMOVE NON CONNECTED", step)
                 step += 1
                 print( self.taggingList)
+            #
             #prepare new turn
             validatedList = self.prepare_new_base(taggingGraph)
             if not validatedList:
@@ -216,7 +226,8 @@ class GrammarTagger:
                     print('@@turn to violet ', ruleNode.name) 
                     ruleNode.color= "violet"
                 #print(ruleNode)
-        return 0
+        return self.isFinished(taggingGraph);
+        
 
     # stage 3 fusion same occurence of a rule which different
     # connected and unconnected atom
@@ -391,3 +402,20 @@ class GrammarTagger:
                 tagsList.append(tempTupple)
                 #print(tagsList)
         return tagsList
+
+    def isFinished(self, taggingGraph):
+        for possibleTerminal in taggingGraph.search_nodes(position = 'final' , connected = True):
+            self.atomNbrInTree = 0
+            self.countAtomInTree(possibleTerminal)
+            if self.atomNbrInTree == self.initialAtomsNbr:
+                return True
+        return False
+
+    def countAtomInTree(self, node):
+        for edge in  node.outgoing:
+            childNode = edge.end
+            print(childNode);
+            if childNode.category == "top":
+                self.countAtomInTree(childNode);
+            if childNode.category == "child":
+                self.atomNbrInTree += 1
